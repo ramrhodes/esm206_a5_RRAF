@@ -1,0 +1,280 @@
+---
+title: "Pacific giant salamanders in Mack Creek"
+subtitle: "A report prepared for ESM 206"
+author: "Alicia Fennell and Rachel Rhodes"
+date: "11/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+```{r}
+### Attach packages
+
+library(tidyverse)
+library(here)
+library(janitor)
+library(tidyr)
+library(ggridges)
+library(directlabels)
+library(effsize)
+library(kableExtra)
+library(ggbeeswarm)
+library(car)
+
+```
+
+```{r}
+### Read in data and make it tidy
+
+salamanders <- read_csv("mack_creek_vertebrates.csv") %>% 
+  clean_names() %>% 
+  filter(species == "DITE")
+
+# Data for Results A
+salamanders_count <- salamanders %>% 
+  count(section, year)
+
+
+# Data for Results B & C
+salamanders_channels <- salamanders %>% 
+  filter(year == "2017") %>% 
+  filter(unittype != "IP") %>% 
+  count(section, unittype) %>% 
+  mutate(section = replace(section, section == "CC", "Clear Cut")) %>%
+  mutate(section = replace(section, section == "OG", "Old Growth")) %>%
+  mutate(unittype = replace(unittype, unittype == "C", "Cascade")) %>%
+  mutate(unittype = replace(unittype, unittype == "P", "Pool")) %>%
+  mutate(unittype = replace(unittype, unittype == "SC", "Side-Channel"))
+
+# Data for Results D
+s_weight_section <- salamanders %>% 
+  filter(year == "2017") %>% 
+  select(section, weight)
+
+# Data for Results E
+
+s_weight_type <- salamanders %>% 
+  filter(year == "2017") %>% 
+  filter(unittype != "IP") %>% 
+  select(unittype, weight)
+
+```
+
+# Introduction
+
+
+
+
+
+# Data and Methods
+
+
+# Results A 
+
+```{r}
+### Results A
+
+## Results A Data Exploration
+
+ggplot(salamanders_count, aes(x = year, y = n)) +
+  geom_bar(stat = "identity")+
+  facet_wrap(~section)
+
+ggplot(data = salamanders_count, aes(sample = n))+
+  geom_qq(aes(color = section),
+          alpha = 0.5,
+          show.legend = FALSE)+
+  facet_wrap(~section)
+
+ggplot(data = salamanders_count, aes(y = section, x = year))+
+  geom_density_ridges(aes(color = section, 
+                          fill = section),
+                      alpha = 0.5)
+
+ggplot(data = salamanders_count, aes(y = n, x = year))+
+  geom_line(aes(color = section),
+            alpha = 0.5)
+
+```
+
+# Results B
+
+```{r}
+### Results B 
+
+## Create a table with wide fromat:
+
+s_channel_table <- salamanders_channels %>% 
+  pivot_wider(names_from = unittype, values_from = n)
+
+
+## Results  B Create a nice looking table with proportions included
+
+s_table_props <- s_channel_table %>% 
+  adorn_percentages(denominator = "row") %>% 
+  adorn_pct_formatting(digits = 0) %>% 
+  adorn_ns(position = "front") %>% 
+  rename(Section = section)
+
+s_table_styled <- kable(s_table_props) %>%
+  kable_styling(bootstrap_options = "striped",
+                full_width = F,
+                position = "left") %>%
+  add_header_above(c("TEST TITLE CHANGE" = 4))
+
+# not sure why preview isn't working
+
+s_table_styled
+
+```
+
+# Results C
+```{r}
+### Results C
+
+
+## Results C Data Exploration
+
+ggplot(salamanders_channels, aes(x = unittype, y = n)) +
+  geom_bar(stat = "identity")+
+  facet_wrap(~section)
+
+## Results C Statistical Test 
+
+# Regarding the locations where salamanders were observed in Mack Creek in 2017, is there a significant effect of forest condition on where the channel salamanders are found?
+
+# Use Chi-square test (see lab 8 and lecture 14)
+
+chi_counts <- s_channel_table %>% 
+  select(-section)
+
+chi_counts
+
+s_chi_counts <- chisq.test(chi_counts)
+
+s_chi_counts
+
+```
+
+# Results D 
+
+```{r}
+# Results D 
+
+## Results D Data Exploration
+ggplot(s_weight_section, aes(x = weight, y = section)) +
+  geom_jitter()
+
+salamanders_summary_weight <- salamanders %>%
+  group_by(section) %>%
+  summarize(
+    mean_weight = mean(weight, na.rm = TRUE),
+    sd_weight = sd(weight, na.rm = TRUE),
+    se_weight = sd(weight, na.rm = TRUE) / sqrt(n()),
+    var_weight = var(weight, na.rm = TRUE)
+  )
+
+## Make vectors for statistical tests
+
+cc_weight <- s_weight_section %>% 
+  filter(section == "CC") %>% 
+  pull(weight)
+
+og_weight <- s_weight_section %>% 
+  filter(section == "OG") %>% 
+  pull(weight)
+
+weight_ttest <- t.test(cc_weight,og_weight)
+
+weight_ttest
+
+# Let's also run Cohen's d for effect size
+
+weight_d <- effsize::cohen.d(cc_weight,og_weight, na.rm =TRUE)
+
+weight_d
+
+# Cannot reject the null hypothesis 
+
+
+```
+# Results E
+
+```{r}
+### Results E 
+
+## Results E Summary Statisitics
+
+salamanders_summary_type <- salamanders %>%
+  group_by(unittype) %>%
+  filter(unittype %in% c("C", "P", "SC")) %>% 
+  summarize(
+    mean_weight = mean(weight, na.rm = TRUE),
+    sd_weight = sd(weight, na.rm = TRUE),
+    se_weight = sd(weight, na.rm = TRUE) / sqrt(n()),
+    var_weight = var(weight, na.rm = TRUE)
+  )
+
+## Results E Data Exploration - want to find a way to include error bars (see Lab 8)
+
+ggplot()+
+  geom_beeswarm(data = s_weight_type,
+                aes(x = unittype,
+                    y = weight),
+                size = 1,
+                alpha = 0.6,
+                color = "darkblue") +
+  scale_fill_manual(values = c("slategrey", "skyblue3","turquoise"))+
+  scale_y_continuous(breaks = c(10,20,30,40,50,60,70,80))
+
+ggplot(data = s_weight_type, aes(x = weight))+
+  geom_density(aes(fill = unittype))+
+  facet_wrap(~unittype)
+
+ggplot(s_weight_type, aes(x = weight)) +
+  geom_histogram(aes(fill = unittype)) +
+  facet_wrap(~unittype)
+
+ggplot(s_weight_type, aes(x = weight, y = unittype)) +
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2, scale = 0.9,
+                      aes(fill = unittype))+
+  scale_fill_manual(values = c("slategrey", "skyblue3","turquoise"))+
+  geom_vline(aes(xintercept = mean(weight)), linetype = 2)
+
+
+
+## Stat test - ANOVA - comparing mean weights between three groups and potential poc-hoc tests depdending on results 
+
+# Exploratory Levene's test to explore variances 
+
+# leveneTest(weight ~ unittype, data = s_weight_type) # P-value is not below 0.05 so we retain the null hypothesis of equal variances
+
+# Now we will do ANOVA test
+
+weight_ANOVA <- aov(weight ~ unittype, data = s_weight_type)
+
+summary(weight_ANOVA)
+
+# Null hpothesis - the meaens are equal across all three groups. Altenative - means are not equal across all groups (at least two differ or all differ). P value is less than 0.05 so we will do post-hoc testings to detrmine which ones differ significantly. 
+
+TukeyHSD(weight_ANOVA)
+
+# Null phyothesis for every pairwise test: there is no significant difference in menas for that that pairwise combination. The only one that differed significantly from each other at %5 significance level is SC-P.
+
+# Lets run Cohen's D to also look at the effect size
+
+
+# Be sure to include actual differences in means, cohen's d and precent differences (refernce back to assignment 4)
+
+# Also describe concerns - see asignment for instructions - this analysis does not include section?
+
+```
+
+# Summary
+
+# References
