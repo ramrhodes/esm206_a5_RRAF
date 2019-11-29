@@ -1,5 +1,5 @@
 ---
-title: "Pacific giant salamanders in Mack Creek" 
+title: "Effects of Land Use Disturbances on Pacific Giant Salamander in Mack Creek, Oregon" 
 subtitle: "A report prepared for ESM 206"
 author: "Alicia Fennell and Rachel Rhodes"
 date: "11/26/2019"
@@ -80,12 +80,13 @@ Salamander and trout populations in the H.J. Andrews Experimental Forest have be
 
 # Data and Methods
 
+Researcher Stanley V Gregory has collected data from 1993 - 2017 on the abundance, length, weight and habitat dimensions of Pacific Giant Salamanders (*Dicamptodon tenebrosus*) at two sites; one of the sites was a section that was clearcut in 1963 and the other was a 500 year old coniferous forest located further upstream. The effects of section type (clear cut or old growth) on the abundance of Pacific Giant Salamander was tested using a Chi-square test.  The weights of Pacific Giant Salamanders found in each site were compared using two-sided, two sample t-tests witha 95% confidence interval and Cohen's d. All analyses and figures were prepared using R software version 3.6.1. 
 
 # Results 
 
 ### 1. Annual salamander abundance in clear cut and old growth forest sections
 
-Salamander numbers in clear cut and old growth forests were recorded each year at Mack Creek between 1993 and 2017 (Figure 1).  
+Salamander numbers in clear cut and old growth forests were recorded each year at Mack Creek between 1993 and 2017 (Figure 1). In both sections of forest, salamander abundance increased from 1993 to 2017. Abundance of salamanders in the clear cut section increased from 126 in 1993 to 368 by 2017 (192% increase). The abundance in old grwoth increased from 129 to 328 in the time period (154% increase). The two sections generally follow the same trends, with similar dips and peaks. Until 2014, most years had higher salamander abundance in old growth forest sections than in clear cut sections.   
 
 ```{r}
 ### Results A
@@ -133,12 +134,10 @@ ggplot(data = salamanders_count, aes(y = n, x = year))+
 ```
 
 
-***Figure 1.*** *Annual California giant salamander abundance (counts) in sections of clear cut forest (orange) and sections of old growth forest (green).* 
-
-In both sections of forest, salamander abundance increased from 1993 to 2017. The two sections generally follow the same trends, with similar dips and peaks. Until 2014, most years had higher salamander abundance in old growth forest sections than in clear cut sections.  
+***Figure 1.*** *Annual California giant salamander abundance (counts) in sections of clear cut forest (orange) and sections of old growth forest (green).Total salamander counts in 2012: clear cut(n) = 126, old growth(n) = 129. Total salamander counts in 2017: clear cut(n) = 368, old growth(n) = 328* 
 
 
-### 2. Salamander proportions in channel classifications by forest section (?? confusing wording. can't figure it out)
+### 2. Abundance of salamander in each section by channel classifications
 
 ***Table 1.*** *Salamander abundance and proportions in 2017 in different channel classifications. In both the clear cut and old growth forest sections, abundance and proportions of salamanders are determined for the three channel classifications: cascade, pool, and side-channel.*
 
