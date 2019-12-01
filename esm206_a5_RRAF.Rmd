@@ -71,16 +71,17 @@ s_weight_type <- salamanders %>%
 # Introduction
 
 
-Salamander and trout populations in the H.J. Andrews Experimental Forest have been monitored for over 20 years in an effort to record long-term population trends related to land use. Pacific giant salamanders (genus *Dicamptodon*) are endemic to the Pacific Northwest and include four distinct species, three of which were differentiated from each other in 1989. Coastal giant salamanders (*Dicamptodon tenebrosus*) were monitored at Mack Creek in Andrews Experimental Forest. This analysis examines abundance and weights of salamanders for different sections (clear cut and old growth forests) and types of habitat (pools, cascades, and side-channels). 
-.......More!
+Salamander and trout populations in the H.J. Andrews Experimental Forest have been monitored for over 20 years in an effort to record long-term population trends related to land use. Pacific giant salamanders (genus *Dicamptodon*) are endemic to the Pacific Northwest and include four distinct species, three of which were differentiated from each other in 1989. Coastal giant salamanders (*Dicamptodon tenebrosus*) were monitored at Mack Creek in Andrews Experimental Forest. This analysis examines abundance and weights of salamanders for different sections (clear cut and old growth forests) and types of habitat (pools, cascades, and side-channels). Land use and disturbance affect wildlife in different ways, and research is ongoing in these areas. The data analyzed in this report attempts to determine if significant associations exist between salamander abundance, weight, and forest sections. (???!!)
 
 
-![**California giant salamander (*Dicamptodon ensatus*) eating a banana slug (*Ariolimax californicus*).** *Photo: Alicia Fennell*](pgs.jpg)
+![**California giant salamander (*Dicamptodon ensatus*) eating a banana slug (*Ariolimax californicus*).** *Pacific Giant Salamanders are one of the only predators of the slimy banana slug, whose mucus offers it protection from most predators. Photo: Alicia Fennell, San Mateo, CA.*](pgs.jpg)
 
 
 # Data and Methods
 
-Researcher Stanley V Gregory has collected data from 1993 - 2017 on the abundance, length, weight and habitat dimensions of Pacific Giant Salamanders (*Dicamptodon tenebrosus*) at two sites; one of the sites was a section that was clearcut in 1963 and the other was a 500 year old coniferous forest located further upstream. The effects of section type (clear cut or old growth) on the abundance of Pacific Giant Salamander was tested using a Chi-square test.  The weights of Pacific Giant Salamanders found in each site were compared using two-sided, two sample t-tests witha 95% confidence interval and Cohen's d. All analyses and figures were prepared using R software version 3.6.1. 
+Researcher Stanley V Gregory has collected data from 1993 - 2017 on the abundance, length, weight and habitat dimensions of Pacific Giant Salamanders (*Dicamptodon tenebrosus*) at two sites; one of the sites was a section that was clearcut in 1963 and the other was a 500 year old coniferous forest located further upstream. Researchers collected data annually at the same 150 meter reaches of stream. The effects of section type (clear cut or old growth) on the abundance of Pacific Giant Salamander was tested using a Chi-square test.  The weights of Pacific Giant Salamanders found in each site were compared using two-sided, two sample t-tests witha 95% confidence interval and Cohen's d. All analyses and figures were prepared using R software version 3.6.1. 
+
+![**Map of the H.J. Andrews Experimental Forest and Mack Creek.** *Photo: Dana Warren.*](map.png)
 
 # Results 
 
@@ -134,7 +135,7 @@ ggplot(data = salamanders_count, aes(y = n, x = year))+
 ```
 
 
-***Figure 1.*** *Annual California giant salamander abundance (counts) in sections of clear cut forest (orange) and sections of old growth forest (green).Total salamander counts in 2012: clear cut(n) = 126, old growth(n) = 129. Total salamander counts in 2017: clear cut(n) = 368, old growth(n) = 328* 
+***Figure 1.*** *Annual California giant salamander abundance (counts) in sections of clear cut forest (orange) and sections of old growth forest (green). Total salamander counts in 1993: clear cut(n) = 126, old growth(n) = 129. Total salamander counts in 2017: clear cut(n) = 368, old growth(n) = 328.* 
 
 
 ### 2. Abundance of salamander in each section by channel classifications
@@ -254,12 +255,12 @@ weight_d
 
 ```
 
-Salamander weights(units?) were compared between clear cut and old growth forest sections in 2017. The mean salamander weight in clear cut forest sections was `r round(cc_mean_weight, 2)` and the mean weight in old growth forests was `r round(og_mean_weight, 2)`. This difference was found to be insignificant, using a two-sample t-test (t(`r round(weight_ttest$parameter, 2)`) = `r round(weight_ttest$statistic, 2)`, *p* = `r round(weight_ttest$p.value, 3)`) with a negligible effect size (Cohen's *d* = `r round(weight_d$estimate, 2)`). Salamander weights do not differ significantly based on forest condition. 
+Salamander weights (grams) were compared between clear cut and old growth forest sections in 2017. The mean salamander weight in clear cut forest sections was `r round(cc_mean_weight, 2)` g and the mean weight in old growth forests was `r round(og_mean_weight, 2)` g. This difference of 1.2 g was found to be insignificant, using a two-sample t-test (t(`r round(weight_ttest$parameter, 2)`) = `r round(weight_ttest$statistic, 2)`, *p* = `r round(weight_ttest$p.value, 3)`) with a negligible effect size (Cohen's *d* = `r round(weight_d$estimate, 2)`). Salamander weights do not differ significantly based on forest condition. 
 
 
 ### 5. Salamander weights in three channel classifications in 2017
 
-
+Salamander weights were measured in the three channel classifications in 2017. This analysis examines weights in different channel locations regardless of forest section (clear cut or old growth). 
 
 ```{r}
 ### Results E 
@@ -331,7 +332,22 @@ TukeyHSD(weight_ANOVA)
 
 ```
 
+***Figure 2.*** *Salamander weights (g) by channel classification in 2017. bla bla bla indicates mean, and something about standard deviation and/or standard error........* 
+
+Mean weights for salamanders were compared between the three channel classifications. Using a one-way ANOVA test, it was determined that at least two of the mean weights were not equal (in line referencing...`r weight_ANOVA$p.value` (this didnt work)). To determine which channel classifications differed in mean weights, a post-hoc Tukey's HSD test was conducted. The results from this indicated that mean weights differed significantly between side-channels and pools, but there was no significant difference in mean weights between pools and cascades and between side-channels and cascades. (in line referencing!). Overall, the only real difference in mean salamander weights based on channel classification was between side-channels and pools. 
+
+If this analysis were to move forward, it would be advisable to compare other metrics rather than just means between groups. Means are affected by outliers, and, as seen in Figure 2, all groups had a few outliers with high weights. It could be helpful to conduct a rank-based test in addition to comparing means between groups. ?????
+
+
 # Summary
 
+- Salamander abundance increased in both clear cut and old growth forest sections between 1993 and 2017
+- Salamander abundance in different channel classifications (cascades, pools, and side-channels) in 2017 is not associated with or affected by forest condition (clear cut or old growth)
+- Salamander weight differences between clear cut and old growth forest sections in 2017 were insignificant
+- There was a significant difference in weights between salamanders found in side-channels and pools in 2017
+- Overall, in terms of abundance and weights, forest disturbance did not seem to have significant effects on salamanders (???? too much to assume, or..,??)
+
 # References
+**Heaston, Emily & Kaylor, Matt & Warren, Dana. (2017).** *Characterizing short-term light dynamics in forested headwater streams.* Freshwater Science. 36. 000-000. 10.1086/691540. 
+
 **Gregory S. V. 2016.** *Aquatic Vertebrate Population Study in Mack Creek, Andrews Experimental Forest, 1987 to present.* Environmental Data Initiative. https://doi.org/10.6073/pasta/5de64af9c11579266ef20da2ff32f702. Dataset accessed 11/27/2019.
