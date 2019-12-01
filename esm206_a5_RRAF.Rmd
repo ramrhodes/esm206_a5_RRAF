@@ -1,5 +1,5 @@
 ---
-title: "Impact of land use disturbances on Pacific Giant Salamander in Mack Creek, Oregon" 
+title: "Impact of land use disturbances on Pacific giant salamander in Mack Creek, OR" 
 subtitle: "A report prepared for ESM 206"
 author: "Alicia Fennell and Rachel Rhodes"
 date: "12/3/2019"
