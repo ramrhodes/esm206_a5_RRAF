@@ -1,5 +1,5 @@
 ---
-title: "Impact of land use disturbances on Pacific giant salamander in Mack Creek, OR" 
+title: "Pacific Giant Salamanders and Land Use in Mack Creek, OR" 
 subtitle: "A report prepared for ESM 206"
 author: "Alicia Fennell and Rachel Rhodes"
 date: "12/3/2019"
@@ -70,7 +70,7 @@ s_weight_type <- salamanders %>%
 # Introduction
 
 
-Salamander and trout populations in the H.J. Andrews Experimental Forest have been monitored for over 20 years in an effort to record long-term population trends related to land use. Pacific giant salamanders (genus *Dicamptodon*) are endemic to the Pacific Northwest and include four distinct species, three of which were differentiated from each other in 1989. Coastal giant salamanders (*Dicamptodon tenebrosus*) were monitored at Mack Creek in Andrews Experimental Forest. This analysis examines abundance and weights of salamanders for different sections (clear cut and old growth forests) and types of habitat (pools, cascades, and side-channels). Land use and disturbance affect wildlife in different ways, and research is ongoing in these areas. The data analyzed in this report attempts to determine if significant associations exist between salamander abundance, weight, and forest sections. (???!!)
+Salamander and trout populations in the H.J. Andrews Experimental Forest have been monitored for over 20 years in an effort to record long-term population trends related to land use. Pacific giant salamanders (genus *Dicamptodon*) are endemic to the Pacific Northwest and include four distinct species, three of which were differentiated from each other in 1989. Coastal giant salamanders (*Dicamptodon tenebrosus*) were monitored at Mack Creek in Andrews Experimental Forest in Oregon. This analysis examines abundance and weights of salamanders for different sections (clear cut and old growth forests) and types of habitat (pools, cascades, and side-channels). Land use and disturbance affect wildlife in different ways, and research is ongoing in these areas. The data analyzed in this report attempts to determine if significant associations exist between salamander abundance, weight, and forest sections in these research zones. 
 
 
 ![**California giant salamander (*Dicamptodon ensatus*) eating a banana slug (*Ariolimax californicus*).** *Pacific Giant Salamanders are one of the only predators of the slimy banana slug, whose mucus offers it protection from most predators. Photo: Alicia Fennell, San Mateo, CA.*](pgs.jpg)
@@ -78,9 +78,11 @@ Salamander and trout populations in the H.J. Andrews Experimental Forest have be
 
 # Data and Methods
 
-Researchers from the Andrews Forest LTER site have collected data from 1993 - 2017 on the abundance, length, weight and habitat dimensions of Pacific Giant Salamanders (*Dicamptodon tenebrosus*) at two sites in the H.J. Andrews Experimental Forest; one of the sites was a section that was clearcut in 1963 and the other site was a 500 year old coniferous forest located further upstream. Researchers collected data annually at the same 150 meter reaches of stream using 2-pass electrofishing. The effects of section type (clear cut or old growth) on the abundance of Pacific Giant Salamander was tested using a Chi-square test.  The weights of Pacific Giant Salamanders found in each site were compared using two-sided, two sample t-tests witha 95% confidence interval and Cohen's d. All analyses and figures were prepared using R software version 3.6.1. 
+Researchers from the Andrews Forest LTER site have collected data from 1993 - 2017 on the abundance, length, weight and habitat dimensions of coastal giant salamanders (*Dicamptodon tenebrosus*) at two sites in the H.J. Andrews Experimental Forest; one of the sites was a section that was clearcut in 1963 and the other site was a 500 year old coniferous forest located further upstream. Researchers collected data annually at the same 150 meter reaches of stream using 2-pass electrofishing. 
 
 ![**Map of the H.J. Andrews Experimental Forest and Mack Creek.** *Photo: Dana Warren.*](map.png)
+
+The effects of section type (clear cut or old growth) on the abundance of giant salamanders in different channel classifications was tested using a Chi-square test. The weights of giant salamanders found in the two forest sections were compared using two-sided, two sample t-tests with a 95% confidence interval and Cohen's d. Salamander weights by channel classification were analyzed using a one-way ANOVA test and post-hoc Tukey's HSD. All analyses and figures were prepared using R software version 3.6.1. 
 
 # Results 
 
@@ -139,9 +141,9 @@ ggplot(data = salamanders_count, aes(y = n, x = year))+
 
 ### 2. Abundance of salamander in each section by channel classifications
 
-Based on the observations recorded from 2017, the proportions of Pacific giant salamander found in different channel classifications (cascade, pool, or side-channel) were calculated within both the clear cut and old growth sections of Mack Creek (Table 1).  Notably, the proportions of salamanders found in the different channel classifications was similar across both forest condtions. In both clear cut and old growth sections, salamander abundance was highest in cascades, lowest in pools, and were almost equal in side-channels, comprising 24% and 23% respectively. 
+Based on the observations recorded in 2017, the proportions of Pacific giant salamanders found in different channel classifications (cascade, pool, or side-channel) were calculated within both the clear cut and old growth sections of Mack Creek (Table 1).  Notably, the proportions of salamanders found in the different channel classifications were similar across both forest condtions. In both clear cut and old growth sections, salamander abundance was highest in cascades, lowest in pools, and were almost equal in side-channels, comprising 24% and 23% respectively. 
 
-***Table 1.*** *Abundance and proportions of salamanders found in different channel classifications within clear cut and old growth sections of Mack Creek in 2017. The different channel classifications include: cascade, pool, and side-channel.*
+***Table 1.*** *Abundance and proportions of salamanders found in different channel classifications within clear cut and old growth sections of Mack Creek in 2017. The different channel classifications include cascade, pool, and side-channel.*
 
 ```{r}
 ### Results B 
@@ -205,7 +207,7 @@ s_chi_counts
 
 ```
 
-For both forest condtions, abundance (counts) and proprtions of salanmander found in each channel classification were compared (Table 1). Salamanderes in the clear cut section seemed to prefer cascades (67%, n =247) and disliked pools (8%, n = 31) compared to salamanders in the old growth section that favored pools more (14%, n = 45), but still overall preferred cascades (63%, n=201).  While the abundnace of salamanders in the different channel classifications was slightly different between the two sections, the proprotions were fairly similar across both forest conditions. A Pearson's Chi-square test was used to determine that forest conditions does not have has an effect on where salamanders are located within the channel (*p* = `r round(s_chi_counts$p.value, 3)`).There is no clear association between section type and salamander location within the channel. 
+For both forest condtions, abundance (counts) and proportions of salamanders found in each channel classification were compared (Table 1). Salamanders in the clear cut section seemed to prefer cascades (67%, n = 247) and were less common in pools (8%, n = 31); salamanders in the old growth section favored pools more (14%, n = 45), but still overall preferred cascades (63%, n = 201). While the abundnace of salamanders in the different channel classifications was slightly different between the two sections, the proportions were fairly similar across both forest conditions. A Pearson's Chi-square test was used to determine that forest condition does not have an effect on where salamanders are located within the channel (*p* = `r round(s_chi_counts$p.value, 3)`). There is no clear association between forest section type and salamander location within the channel. 
 
 
 ### 4. Salamander weights in clear cut and old growth forest sections in 2017
@@ -256,7 +258,7 @@ weight_d
 
 ```
 
-Salamander weights (grams) were compared between clear cut and old growth forest sections in 2017. The mean salamander weight in clear cut forest sections was `r round(cc_mean_weight, 2)` g and the mean weight in old growth forests was `r round(og_mean_weight, 2)` g. This difference in means of `r round(cc_mean_weight, 2) - round(og_mean_weight, 2)` g was found to be insignificant, using a two-sample t-test (t(`r round(weight_ttest$parameter, 2)`) = `r round(weight_ttest$statistic, 2)`, *p* = `r round(weight_ttest$p.value, 3)`) with a negligible effect size (Cohen's *d* = `r round(weight_d$estimate, 2)`). Salamander weights do not differ significantly based on forest condition. 
+Salamander weights (grams) were compared between clear cut and old growth forest sections in 2017. The mean salamander weight in clear cut forest sections was `r round(cc_mean_weight, 2)` g and the mean weight in old growth forests was `r round(og_mean_weight, 2)` g. This difference in means of `r round(cc_mean_weight, 2) - round(og_mean_weight, 2)` g was found to be insignificant using a two-sample t-test (t(`r round(weight_ttest$parameter, 2)`) = `r round(weight_ttest$statistic, 2)`, *p* = `r round(weight_ttest$p.value, 3)`) with a negligible effect size (Cohen's *d* = `r round(weight_d$estimate, 2)`). Salamander weights do not differ significantly based on forest condition. 
 
 
 ### 5. Salamander weights in three channel classifications in 2017
@@ -293,10 +295,13 @@ ggplot()+
                     ymax = mean_weight + sd_weight),
                 color = "darkblue",
                 width = 0.1) +
+  geom_point(data = salamanders_summary_type, aes(x = unittype, y = mean_weight), 
+             color = "darkblue",
+             size = 2) +
   labs(x = "Channel classification", 
         y = "Weight (g)")+
-  ggtitle("WEIGHT OF PACIFIC GIANT SALAMANDER BY CHANNEL CLASSIFICATION (2017)",
-          subtitle = "Pacific giant salamander weights betwween cascades, pools and side-channels") +
+  ggtitle("WEIGHT OF PACIFIC GIANT SALAMANDERS BY CHANNEL CLASSIFICATION (2017)",
+          subtitle = "Pacific giant salamander weights between cascades, pools and side-channels") +
   theme_minimal()+
   theme(legend.position = "none")
 
@@ -337,9 +342,15 @@ ggplot()+
 
 weight_ANOVA <- aov(weight ~ unittype, data = s_weight_type)
 
+# weight_ANOVA
+
+aov_outputs <- unlist(summary(weight_ANOVA))
+
 # Null hpothesis - the meaens are equal across all three groups. Altenative - means are not equal across all groups (at least two differ or all differ). P value is less than 0.05 so we will do post-hoc testings to detrmine which ones differ significantly. 
 
 weight_tukey <- TukeyHSD(weight_ANOVA)
+
+# weight_tukey
 
 # Null phyothesis for every pairwise test: there is no significant difference in menas for that that pairwise combination. The only one that differed significantly from each other at %5 significance level is SC-P.
 
@@ -352,20 +363,20 @@ weight_tukey <- TukeyHSD(weight_ANOVA)
 
 ```
 
-***Figure 2.*** *Salamander weights (g) by channel classification in 2017. bla bla bla indicates mean, and something about standard deviation and/or standard error........* 
+***Figure 2.*** *Salamander weights (g) by channel classification in 2017. The dark blue points in each channel classification indicate the mean weight, and the error bars include one standard deviation on either end of the mean.* 
 
-Mean weights for salamanders were compared between the three channel classifications. Using a one-way ANOVA test, it was determined that at least two of the mean weights were not equal (in line referencing...`r weight_ANOVA$p.value` (this didnt work)). To determine which channel classifications differed in mean weights, a post-hoc Tukey's HSD test was conducted. The results from this indicated that mean weights differed significantly between side-channels and pools, but there was no significant difference in mean weights between pools and cascades and between side-channels and cascades. (in line referencing!). Overall, the only real difference in mean salamander weights based on channel classification was between side-channels and pools. 
+Mean weights for salamanders were compared between the three channel classifications. The mean weight was 7.52 grams in cascades, 9.30 grams in pools, and 5.68 grams in side-channels. Using a one-way ANOVA test, it was determined that at least two of the mean weights were significantly different (F(`r aov_outputs[1]`, `r aov_outputs[2]`) = `r round(aov_outputs[7], 2)`, *p* = `r round(aov_outputs[9], 3)`). To determine which channel classifications differed in mean weights, a post-hoc Tukey's HSD test was conducted. The results from this indicated that mean weights differed significantly between side-channels and pools, but there was no significant difference in mean weights between pools and cascades or between side-channels and cascades (*p* = 0.286 between pools and cascades; *p* = 0.084 between side-channels and cascades; *p* = 0.017 between side-channels and pools). Overall, the main difference in mean salamander weights based on channel classification was between side-channels and pools, which was 3.62 grams. 
 
-If this analysis were to move forward, it would be advisable to compare other metrics rather than just means between groups. Means are affected by outliers, and, as seen in Figure 2, all groups had a few outliers with high weights. It could be helpful to conduct a rank-based test in addition to comparing means between groups. ?????
+If this analysis were to move forward, it would be advisable to compare other metrics rather than just means between groups. Means are affected by outliers, and, as seen in Figure 2, all groups had a few outliers with high weights. It could be helpful to conduct a rank-based test in addition to comparing means between groups.
 
 
 # Summary
 
 - Salamander abundance increased in both clear cut and old growth forest sections between 1993 and 2017
-- Salamander abundance in different channel classifications (cascades, pools, and side-channels) in 2017 is not associated with or affected by forest condition (clear cut or old growth)
+- Salamander abundance in different channel classifications (cascades, pools, and side-channels) in 2017 was not associated with or affected by forest condition (clear cut or old growth)
 - Salamander weight differences between clear cut and old growth forest sections in 2017 were insignificant
 - There was a significant difference in weights between salamanders found in side-channels and pools in 2017
-- Overall, in terms of abundance and weights, forest disturbance did not seem to have significant effects on salamanders (???? too much to assume, or..,??)
+- Overall, in terms of abundance and weights, the salamanders in the research zones were not significantly affected by forest disturbance
 
 # References
 **Heaston, Emily & Kaylor, Matt & Warren, Dana. (2017).** *Characterizing short-term light dynamics in forested headwater streams.* Freshwater Science. 36. 000-000. 10.1086/691540. 
