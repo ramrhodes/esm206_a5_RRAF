@@ -1,5 +1,5 @@
 ---
-title: "Coastal giant salamanders and land use in Mack Creek, OR" 
+title: "Coastal Giant Salamanders and Land Distrubances in Mack Creek, OR" 
 subtitle: "A report prepared for ESM 206"
 author: "Alicia Fennell and Rachel Rhodes"
 date: "12/3/2019"
@@ -149,13 +149,11 @@ Based on the observations recorded in 2017, the proportions of coastal giant sal
 ### Results B 
 
 ## Create a table with wide fromat:
-
 s_channel_table <- salamanders_channels %>% 
   pivot_wider(names_from = unittype, values_from = n)
 
 
 ## Results  B Create a nice looking table with proportions included
-
 s_table_props <- s_channel_table %>% 
   adorn_percentages(denominator = "row") %>% 
   adorn_pct_formatting(digits = 0) %>% 
@@ -177,10 +175,8 @@ s_table_styled
 
 ### 3. Effects of forest conditions on salamander locations
 
-
 ```{r include = FALSE}
 ### Results C
-
 
 ## Results C Data Exploration
 
@@ -190,9 +186,7 @@ s_table_styled
 
 ## Results C Statistical Test 
 
-# Regarding the locations where salamanders were observed in Mack Creek in 2017, is there a significant effect of forest condition on where the channel salamanders are found?
-
-# Use Chi-square test (see lab 8 and lecture 14)
+# Regarding the locations where salamanders were observed in Mack Creek in 2017, is there a significant effect of forest condition on where the channel salamanders are found? 
 
 chi_counts <- s_channel_table %>% 
   select(-section)
@@ -243,6 +237,8 @@ cc_mean_weight <- mean(cc_weight)
 
 og_mean_weight <- mean(og_weight, na.rm = TRUE)
 
+# Run two samplee, two-sided ttest
+
 weight_ttest <- t.test(cc_weight,og_weight)
 
 weight_ttest
@@ -252,10 +248,6 @@ weight_ttest
 weight_d <- effsize::cohen.d(cc_weight,og_weight, na.rm =TRUE)
 
 weight_d
-
-# Cannot reject the null hypothesis 
-
-
 ```
 
 Salamander weights (grams) were compared between clear cut and old growth forest sections in 2017.  The mean weight of salamanders found in clear cut sections was slightly heavier (`r round(cc_mean_weight, 2)` g) compared to salamanders found in old growth sections (`r round(og_mean_weight, 2)` g). This difference in mean weights of `r round(cc_mean_weight, 2) - round(og_mean_weight, 2)` g was found to be insignificant using a two-sample t-test (t(`r round(weight_ttest$parameter, 2)`) = `r round(weight_ttest$statistic, 2)`, *p* = `r round(weight_ttest$p.value, 3)`) with a negligible effect size (Cohen's *d* = `r round(weight_d$estimate, 2)`). Salamander weights do not differ significantly based on forest condition. 
@@ -281,13 +273,12 @@ salamanders_summary_type <- salamanders %>%
   )
 
 
-## Stat test - ANOVA - comparing mean weights between three groups and potential poc-hoc tests depdending on results 
+## Statistical test 
 
 # Exploratory Levene's test to explore variances 
-
 # leveneTest(weight ~ unittype, data = s_weight_type) # P-value is not below 0.05 so we retain the null hypothesis of equal variances
 
-# Now we will do ANOVA test
+# ANOVA - comparing mean weights between three groups and potential poc-hoc tests depdending on results 
 
 weight_ANOVA <- aov(weight ~ unittype, data = s_weight_type)
 
@@ -295,26 +286,21 @@ weight_ANOVA <- aov(weight ~ unittype, data = s_weight_type)
 
 aov_outputs <- unlist(summary(weight_ANOVA))
 
-# Null hpothesis - the meaens are equal across all three groups. Altenative - means are not equal across all groups (at least two differ or all differ). P value is less than 0.05 so we will do post-hoc testings to detrmine which ones differ significantly. 
+# Null hpothesis - the meaens are equal across all three groups. Altenative - means are not equal across all groups (at least two differ or all differ).
+# P value is less than 0.05 so we will do post-hoc testings to detrmine which ones differ significantly. 
 
 weight_tukey <- TukeyHSD(weight_ANOVA)
 
 
 # Null phyothesis for every pairwise test: there is no significant difference in menas for that that pairwise combination. The only one that differed significantly from each other at %5 significance level is SC-P.
 
-# Lets run Cohen's D to also look at the effect size
-
-
-# Be sure to include actual differences in means, cohen's d and precent differences (refernce back to assignment 4)
-
-# Also describe concerns - see asignment for instructions - this analysis does not include section?
-
 ```
 
 Mean weights for salamanders in 2017 were compared between the three channel classifications, regardless of forest section (clear cut or old growth).  Salamanders found in pools had the largest mean weight (9.30 grams), salamanders found in side-channels had the smallest (5.68 grams) and the mean weight of salamanders found in cascades was in between the two (7.52 grams). Using a one-way ANOVA test, it was determined that at least two of the mean weights were significantly different (F(`r aov_outputs[1]`, `r aov_outputs[2]`) = `r round(aov_outputs[7], 2)`, *p* = `r round(aov_outputs[9], 3)`). To determine which channel classifications differed in mean weights, a post-hoc Tukey's HSD test was conducted. The results from this indicated that mean weights differed significantly between side-channels and pools, but there was no significant difference in mean weights between pools and cascades or between side-channels and cascades (*p* = 0.286 between pools and cascades; *p* = 0.084 between side-channels and cascades; *p* = 0.017 between side-channels and pools). Overall, the main difference in mean salamander weights based on channel classification was between side-channels and pools, which was 3.62 grams. 
 
 ```{r}
-## Results E Data Exploration - want to find a way to include error bars (see Lab 8)
+
+## Results E Data Visualization
 
 ggplot()+
   geom_beeswarm(data = s_weight_type,aes(x = unittype, y = weight, color = unittype),
@@ -333,38 +319,14 @@ ggplot()+
              size = 2) +
   labs(x = "Channel classification", 
         y = "Weight (g)")+
-  ggtitle("PACIFIC GIANT SALAMANDERS WEIGHTS BY CHANNEL CLASSIFICATION",
-          subtitle = "Pacific giant salamander weights between cascades, pools and side-channels in 2017") +
+  ggtitle("SALAMANDER WEIGHTS BY CHANNEL CLASSIFICATION (2017)",
+          subtitle = "Coastal giant salamander weights between cascades, pools and side-channels") +
   theme_minimal()+
   theme(legend.position = "none")
 
-# ggplot(data = s_weight_type, aes(x = weight))+
-#   geom_density(aes(fill = unittype), alpha = 0.4)+
-#   scale_fill_manual(values = c("slategrey", "skyblue3","turquoise"))+
-#   geom_vline(aes(xintercept = mean_weight, color = unittype),
-#              data = salamanders_summary_type,
-#              linetype = "dashed")+
-#   facet_wrap(~unittype)
-# 
-# ggplot(data = s_weight_type, aes(x = weight))+
-#   geom_density(aes(fill = unittype), alpha = 0.4)+
-#   scale_fill_manual(values = c("slategrey", "skyblue3","turquoise"))+
-#   geom_vline(aes(xintercept = mean_weight, color = unittype),
-#              data = salamanders_summary_type,
-#              linetype = "dashed")
-# 
-# 
-# ggplot(s_weight_type, aes(x = weight, y = unittype)) +
-#   stat_density_ridges(aes(fill = unittype))+
-#   scale_fill_manual(values = c("slategrey", "skyblue3","turquoise"))+
-#   geom_vline(aes(xintercept = mean_weight, color = unittype),
-#              data = salamanders_summary_type,
-#              linetype = "dashed")
-
-
 ```
 
-***Figure 2.*** *Salamander weights (grams) by channel classification in 2017. The dark blue points in each channel classification indicate the mean weight, and the error bars include one standard deviation on either end of the mean, truncated at zero since salamander weight can not be less than zero. * 
+***Figure 2.*** *Coastal giant salamander weights (grams) by channel classification in 2017. The dark blue points in each channel classification indicate the mean weight, and the error bars include one standard deviation on either end of the mean, truncated at zero since salamander weight can not be less than zero. * 
 
 If this analysis were to move forward, it would be advisable to compare other metrics rather than just means between groups. Means are affected by outliers, and, as seen in Figure 2, all groups had a few outliers with high weights. It could be helpful to conduct a rank-based test in addition to comparing means between groups.
 
